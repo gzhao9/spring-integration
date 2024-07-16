@@ -63,8 +63,7 @@ public class DispatcherHasNoSubscribersTests {
 				.thenReturn(declareOk);
 		Connection connection = mock(Connection.class);
 		doAnswer(invocation -> channel).when(connection).createChannel(anyBoolean());
-		ConnectionFactory connectionFactory = mock(ConnectionFactory.class);
-		when(connectionFactory.createConnection()).thenReturn(connection);
+		ConnectionFactory connectionFactory = mockConnectionFactory(connection);
 		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
 		container.setConnectionFactory(connectionFactory);
 		AmqpTemplate amqpTemplate = mock(AmqpTemplate.class);
@@ -87,8 +86,7 @@ public class DispatcherHasNoSubscribersTests {
 		final Channel channel = mock(Channel.class);
 		Connection connection = mock(Connection.class);
 		doAnswer(invocation -> channel).when(connection).createChannel(anyBoolean());
-		ConnectionFactory connectionFactory = mock(ConnectionFactory.class);
-		when(connectionFactory.createConnection()).thenReturn(connection);
+		ConnectionFactory connectionFactory = mockConnectionFactory(connection);
 		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
 		container.setConnectionFactory(connectionFactory);
 		AmqpTemplate amqpTemplate = mock(AmqpTemplate.class);
@@ -136,6 +134,12 @@ public class DispatcherHasNoSubscribersTests {
 			}
 		}
 		assertThat(expectedExceptionFound).as("Failed to get expected exception").isTrue();
+	}
+	
+	private ConnectionFactory mockConnectionFactory(Connection connection) {
+		ConnectionFactory mockConnectionFactory = mock(ConnectionFactory.class);
+		when(mockConnectionFactory.createConnection()).thenReturn(connection);
+		return mockConnectionFactory;
 	}
 
 }
