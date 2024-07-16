@@ -92,8 +92,7 @@ public class InboundEndpointTests {
 	public void testInt2809JavaTypePropertiesToAmqp() throws Exception {
 		Connection connection = mock(Connection.class);
 		doAnswer(invocation -> mock(Channel.class)).when(connection).createChannel(anyBoolean());
-		ConnectionFactory connectionFactory = mock(ConnectionFactory.class);
-		when(connectionFactory.createConnection()).thenReturn(connection);
+		ConnectionFactory connectionFactory = mockConnectionFactory(connection);
 		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
 		container.setConnectionFactory(connectionFactory);
 		container.setAcknowledgeMode(AcknowledgeMode.MANUAL);
@@ -136,8 +135,7 @@ public class InboundEndpointTests {
 	public void testInt2809JavaTypePropertiesFromAmqp() throws Exception {
 		Connection connection = mock(Connection.class);
 		doAnswer(invocation -> mock(Channel.class)).when(connection).createChannel(anyBoolean());
-		ConnectionFactory connectionFactory = mock(ConnectionFactory.class);
-		when(connectionFactory.createConnection()).thenReturn(connection);
+		ConnectionFactory connectionFactory = mockConnectionFactory(connection);
 		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
 		container.setConnectionFactory(connectionFactory);
 
@@ -171,8 +169,7 @@ public class InboundEndpointTests {
 	public void testMessageConverterJsonHeadersHavePrecedenceOverMessageHeaders() throws Exception {
 		Connection connection = mock(Connection.class);
 		doAnswer(invocation -> mock(Channel.class)).when(connection).createChannel(anyBoolean());
-		ConnectionFactory connectionFactory = mock(ConnectionFactory.class);
-		when(connectionFactory.createConnection()).thenReturn(connection);
+		ConnectionFactory connectionFactory = mockConnectionFactory(connection);
 		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
 		container.setConnectionFactory(connectionFactory);
 		container.setAcknowledgeMode(AcknowledgeMode.MANUAL);
@@ -237,8 +234,7 @@ public class InboundEndpointTests {
 	public void testAdapterConversionError() throws Exception {
 		Connection connection = mock(Connection.class);
 		doAnswer(invocation -> mock(Channel.class)).when(connection).createChannel(anyBoolean());
-		ConnectionFactory connectionFactory = mock(ConnectionFactory.class);
-		when(connectionFactory.createConnection()).thenReturn(connection);
+		ConnectionFactory connectionFactory = mockConnectionFactory(connection);
 		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
 		container.setConnectionFactory(connectionFactory);
 		AmqpInboundChannelAdapter adapter = new AmqpInboundChannelAdapter(container);
@@ -287,8 +283,7 @@ public class InboundEndpointTests {
 	public void testGatewayConversionError() throws Exception {
 		Connection connection = mock(Connection.class);
 		doAnswer(invocation -> mock(Channel.class)).when(connection).createChannel(anyBoolean());
-		ConnectionFactory connectionFactory = mock(ConnectionFactory.class);
-		when(connectionFactory.createConnection()).thenReturn(connection);
+		ConnectionFactory connectionFactory = mockConnectionFactory(connection);
 		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
 		container.setConnectionFactory(connectionFactory);
 		AmqpInboundGateway adapter = new AmqpInboundGateway(container);
@@ -589,8 +584,7 @@ public class InboundEndpointTests {
 	public void testAdapterConversionErrorConsumerBatchExtract() {
 		Connection connection = mock(Connection.class);
 		doAnswer(invocation -> mock(Channel.class)).when(connection).createChannel(anyBoolean());
-		ConnectionFactory connectionFactory = mock(ConnectionFactory.class);
-		when(connectionFactory.createConnection()).thenReturn(connection);
+		ConnectionFactory connectionFactory = mockConnectionFactory(connection);
 		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
 		container.setConnectionFactory(connectionFactory);
 		container.setConsumerBatchEnabled(true);
@@ -646,8 +640,7 @@ public class InboundEndpointTests {
 	public void testAdapterConversionErrorConsumerBatch() {
 		Connection connection = mock(Connection.class);
 		doAnswer(invocation -> mock(Channel.class)).when(connection).createChannel(anyBoolean());
-		ConnectionFactory connectionFactory = mock(ConnectionFactory.class);
-		when(connectionFactory.createConnection()).thenReturn(connection);
+		ConnectionFactory connectionFactory = mockConnectionFactory(connection);
 		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
 		container.setConnectionFactory(connectionFactory);
 		container.setConsumerBatchEnabled(true);
@@ -782,7 +775,12 @@ public class InboundEndpointTests {
 
 		assertThat(recoveredMessages.get()).isSameAs(messages);
 	}
-
+	
+	private ConnectionFactory mockConnectionFactory(Connection connection) {
+		ConnectionFactory mockConnectionFactory = mock(ConnectionFactory.class);
+		when(mockConnectionFactory.createConnection()).thenReturn(connection);
+		return mockConnectionFactory;
+	}
 	public record Foo(String bar) {
 
 	}
