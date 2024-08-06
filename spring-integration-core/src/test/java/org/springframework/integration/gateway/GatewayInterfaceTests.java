@@ -112,7 +112,9 @@ import static org.mockito.Mockito.verify;
 @DirtiesContext
 @ActiveProfiles("gatewayTest")
 public class GatewayInterfaceTests {
-
+	final MessageHandler handler = mock(MessageHandler.class);
+	final MessageHandler messageHandler = mock(MessageHandler.class);
+	
 	private static final String IGNORE_HEADER = "ignoreHeader";
 
 	@Autowired
@@ -220,7 +222,6 @@ public class GatewayInterfaceTests {
 		ConfigurableApplicationContext ac =
 				new ClassPathXmlApplicationContext("GatewayInterfaceTests-context.xml", getClass());
 		DirectChannel channel = ac.getBean("requestChannelBar", DirectChannel.class);
-		MessageHandler handler = mock(MessageHandler.class);
 		channel.subscribe(handler);
 		Bar bar = ac.getBean(Bar.class);
 		bar.bar("hello");
@@ -279,7 +280,6 @@ public class GatewayInterfaceTests {
 		ConfigurableApplicationContext ac =
 				new ClassPathXmlApplicationContext("GatewayInterfaceTests-context.xml", getClass());
 		DirectChannel channel = ac.getBean("requestChannelFoo", DirectChannel.class);
-		MessageHandler handler = mock(MessageHandler.class);
 		channel.subscribe(handler);
 		Foo foo = ac.getBean(Foo.class);
 		foo.foo("hello");
@@ -292,7 +292,6 @@ public class GatewayInterfaceTests {
 		ConfigurableApplicationContext ac =
 				new ClassPathXmlApplicationContext("GatewayInterfaceTests-context.xml", getClass());
 		DirectChannel channel = ac.getBean("requestChannelBaz", DirectChannel.class);
-		MessageHandler handler = mock(MessageHandler.class);
 		channel.subscribe(handler);
 		Foo foo = ac.getBean(Foo.class);
 		foo.baz("hello");
@@ -305,7 +304,6 @@ public class GatewayInterfaceTests {
 		ConfigurableApplicationContext ac =
 				new ClassPathXmlApplicationContext("GatewayInterfaceTests-context.xml", getClass());
 		DirectChannel channel = ac.getBean("requestChannelBaz", DirectChannel.class);
-		MessageHandler handler = mock(MessageHandler.class);
 		channel.subscribe(handler);
 		Bar bar = ac.getBean(Bar.class);
 		assertThat(ac.getBean(Bar.class).hashCode()).isEqualTo(bar.hashCode());
@@ -318,7 +316,6 @@ public class GatewayInterfaceTests {
 		ConfigurableApplicationContext ac =
 				new ClassPathXmlApplicationContext("GatewayInterfaceTests-context.xml", getClass());
 		DirectChannel channel = ac.getBean("requestChannelBaz", DirectChannel.class);
-		MessageHandler handler = mock(MessageHandler.class);
 		channel.subscribe(handler);
 		Bar bar = ac.getBean(Bar.class);
 		bar.toString();
@@ -331,7 +328,6 @@ public class GatewayInterfaceTests {
 		ConfigurableApplicationContext ac =
 				new ClassPathXmlApplicationContext("GatewayInterfaceTests-context.xml", getClass());
 		DirectChannel channel = ac.getBean("requestChannelBaz", DirectChannel.class);
-		MessageHandler handler = mock(MessageHandler.class);
 		channel.subscribe(handler);
 		Bar bar = ac.getBean(Bar.class);
 		assertThat(ac.getBean(Bar.class)).isSameAs(bar);
@@ -352,7 +348,6 @@ public class GatewayInterfaceTests {
 		ConfigurableApplicationContext ac =
 				new ClassPathXmlApplicationContext("GatewayInterfaceTests-context.xml", getClass());
 		DirectChannel channel = ac.getBean("requestChannelBaz", DirectChannel.class);
-		MessageHandler handler = mock(MessageHandler.class);
 		channel.subscribe(handler);
 		Bar bar = ac.getBean(Bar.class);
 		bar.getClass();
@@ -504,8 +499,6 @@ public class GatewayInterfaceTests {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testIgnoredHeader() {
-		MessageHandler messageHandler = mock(MessageHandler.class);
-
 		((SubscribableChannel) this.errorChannel).subscribe(messageHandler);
 		this.ignoredHeaderGateway.service("foo", "theHeaderValue");
 
@@ -546,8 +539,6 @@ public class GatewayInterfaceTests {
 	void primaryMarkerWins() {
 		PrimaryGateway primaryGateway = this.beanFactory.getBean(PrimaryGateway.class);
 		assertThat(AopUtils.isAopProxy(primaryGateway)).isTrue();
-
-		MessageHandler messageHandler = mock(MessageHandler.class);
 
 		((SubscribableChannel) this.errorChannel).subscribe(messageHandler);
 
