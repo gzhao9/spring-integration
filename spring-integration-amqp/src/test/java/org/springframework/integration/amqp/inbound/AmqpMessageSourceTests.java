@@ -53,10 +53,10 @@ import static org.mockito.Mockito.verify;
  *
  */
 public class AmqpMessageSourceTests {
-
+	final Channel channel = mock(Channel.class);
+	
 	@Test
 	public void testAck() throws Exception {
-		Channel channel = mock(Channel.class);
 		willReturn(true).given(channel).isOpen();
 		Envelope envelope = new Envelope(123L, false, "ex", "rk");
 		BasicProperties props = new BasicProperties.Builder().build();
@@ -104,7 +104,6 @@ public class AmqpMessageSourceTests {
 	}
 
 	private void testNackOrRequeue(boolean requeue) throws Exception {
-		Channel channel = mock(Channel.class);
 		willReturn(true).given(channel).isOpen();
 		Envelope envelope = new Envelope(123L, false, "ex", "rk");
 		BasicProperties props = new BasicProperties.Builder().build();
@@ -141,7 +140,6 @@ public class AmqpMessageSourceTests {
 		message = new org.springframework.amqp.core.Message("test2".getBytes(), messageProperties);
 		MessageBatch batched = bs.addToBatch("foo", "bar", message);
 
-		Channel channel = mock(Channel.class);
 		willReturn(true).given(channel).isOpen();
 		Envelope envelope = new Envelope(123L, false, "ex", "rk");
 		BasicProperties props = new BasicProperties.Builder()
