@@ -60,7 +60,8 @@ import static org.mockito.Mockito.when;
 @SpringJUnitConfig
 @DirtiesContext
 public class HeaderChannelRegistryTests {
-
+	final BeanFactory beanFactory = mock(BeanFactory.class);
+	
 	@Autowired
 	MessageChannel input;
 
@@ -206,7 +207,6 @@ public class HeaderChannelRegistryTests {
 	@Test
 	public void testBFCRWithRegistry() {
 		BeanFactoryChannelResolver resolver = new BeanFactoryChannelResolver();
-		BeanFactory beanFactory = mock(BeanFactory.class);
 		when(beanFactory.getBean(IntegrationContextUtils.INTEGRATION_HEADER_CHANNEL_REGISTRY_BEAN_NAME,
 				HeaderChannelRegistry.class))
 				.thenReturn(mock(HeaderChannelRegistry.class));
@@ -223,7 +223,6 @@ public class HeaderChannelRegistryTests {
 	@Test
 	public void testBFCRNoRegistry() {
 		BeanFactoryChannelResolver resolver = new BeanFactoryChannelResolver();
-		BeanFactory beanFactory = mock(BeanFactory.class);
 		doAnswer(invocation -> {
 			throw new NoSuchBeanDefinitionException("bar");
 		}).when(beanFactory).getBean("foo", MessageChannel.class);

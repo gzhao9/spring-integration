@@ -86,6 +86,8 @@ import static org.mockito.Mockito.when;
 @SpringJUnitConfig
 @DirtiesContext
 public class AmqpOutboundChannelAdapterParserTests {
+	final Channel mockChannel = mock(Channel.class);
+	final Connection mockConnection = mock(Connection.class);
 
 	private static volatile int adviceCalled;
 
@@ -244,8 +246,6 @@ public class AmqpOutboundChannelAdapterParserTests {
 	@Test
 	public void testInt2773UseDefaultAmqpTemplateExchangeAndRoutingLey() throws IOException {
 		ConnectionFactory connectionFactory = context.getBean(ConnectionFactory.class);
-		Connection mockConnection = mock(Connection.class);
-		Channel mockChannel = mock(Channel.class);
 
 		when(connectionFactory.createConnection()).thenReturn(mockConnection);
 		PublisherCallbackChannelImpl publisherCallbackChannel = new PublisherCallbackChannelImpl(mockChannel,
@@ -262,8 +262,6 @@ public class AmqpOutboundChannelAdapterParserTests {
 	@Test
 	public void testInt2773WithDefaultAmqpTemplateExchangeAndRoutingKey() throws IOException {
 		ConnectionFactory connectionFactory = context.getBean(ConnectionFactory.class);
-		Connection mockConnection = mock(Connection.class);
-		Channel mockChannel = mock(Channel.class);
 
 		when(connectionFactory.createConnection()).thenReturn(mockConnection);
 		PublisherCallbackChannelImpl publisherCallbackChannel = new PublisherCallbackChannelImpl(mockChannel,
@@ -280,8 +278,6 @@ public class AmqpOutboundChannelAdapterParserTests {
 	@Test
 	public void testInt2773WithOverrideToDefaultAmqpTemplateExchangeAndRoutingLey() throws IOException {
 		ConnectionFactory connectionFactory = context.getBean(ConnectionFactory.class);
-		Connection mockConnection = mock(Connection.class);
-		Channel mockChannel = mock(Channel.class);
 
 		when(connectionFactory.createConnection()).thenReturn(mockConnection);
 		PublisherCallbackChannelImpl publisherCallbackChannel = new PublisherCallbackChannelImpl(mockChannel,

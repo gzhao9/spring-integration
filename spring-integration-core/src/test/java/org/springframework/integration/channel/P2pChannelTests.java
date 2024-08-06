@@ -41,6 +41,8 @@ import static org.mockito.Mockito.when;
  *
  */
 public class P2pChannelTests {
+	final MessageHandler handler1 = mock(MessageHandler.class);
+	final MessageHandler handler2 = mock(MessageHandler.class);
 
 	@Test
 	public void testDirectChannelLoggingWithMoreThenOneSubscriber() {
@@ -72,11 +74,9 @@ public class P2pChannelTests {
 				+ "' has "
 				+ "%d subscriber(s).";
 
-		MessageHandler handler1 = mock(MessageHandler.class);
 		channel.subscribe(handler1);
 		assertThat(channel.getSubscriberCount()).isEqualTo(1);
 		assertThat(logs.remove(0)).isEqualTo(String.format(log, 1));
-		MessageHandler handler2 = mock(MessageHandler.class);
 		channel.subscribe(handler2);
 		assertThat(channel.getSubscriberCount()).isEqualTo(2);
 		assertThat(logs.remove(0)).isEqualTo(String.format(log, 2));

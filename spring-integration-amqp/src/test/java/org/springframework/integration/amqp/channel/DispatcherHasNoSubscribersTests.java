@@ -53,7 +53,8 @@ import static org.mockito.Mockito.when;
  *
  */
 public class DispatcherHasNoSubscribersTests {
-
+	final ConnectionFactory connectionFactory = mock(ConnectionFactory.class);
+	final Connection connection = mock(Connection.class);
 	@Test
 	public void testPtP() throws Exception {
 		final Channel channel = mock(Channel.class);
@@ -61,9 +62,7 @@ public class DispatcherHasNoSubscribersTests {
 		when(declareOk.getQueue()).thenReturn("noSubscribersChannel");
 		when(channel.queueDeclare(anyString(), anyBoolean(), anyBoolean(), anyBoolean(), isNull()))
 				.thenReturn(declareOk);
-		Connection connection = mock(Connection.class);
 		doAnswer(invocation -> channel).when(connection).createChannel(anyBoolean());
-		ConnectionFactory connectionFactory = mock(ConnectionFactory.class);
 		when(connectionFactory.createConnection()).thenReturn(connection);
 		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
 		container.setConnectionFactory(connectionFactory);
@@ -85,9 +84,7 @@ public class DispatcherHasNoSubscribersTests {
 	@Test
 	public void testPubSub() {
 		final Channel channel = mock(Channel.class);
-		Connection connection = mock(Connection.class);
 		doAnswer(invocation -> channel).when(connection).createChannel(anyBoolean());
-		ConnectionFactory connectionFactory = mock(ConnectionFactory.class);
 		when(connectionFactory.createConnection()).thenReturn(connection);
 		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
 		container.setConnectionFactory(connectionFactory);
