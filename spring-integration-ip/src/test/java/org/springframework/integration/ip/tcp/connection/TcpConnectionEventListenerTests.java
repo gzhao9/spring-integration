@@ -38,6 +38,7 @@ import static org.mockito.Mockito.mock;
  *
  */
 public class TcpConnectionEventListenerTests {
+	final BeanFactory mock = mock(BeanFactory.class);
 
 	@Test
 	public void testNoFilter() {
@@ -45,7 +46,6 @@ public class TcpConnectionEventListenerTests {
 		QueueChannel outputChannel = new QueueChannel();
 		eventProducer.setOutputChannel(outputChannel);
 		eventProducer.setEventTypes(TcpConnectionEvent.class);
-		BeanFactory mock = mock(BeanFactory.class);
 		given(mock.getBean(AbstractApplicationContext.APPLICATION_EVENT_MULTICASTER_BEAN_NAME,
 				ApplicationEventMulticaster.class))
 				.willReturn(mock(ApplicationEventMulticaster.class));
@@ -85,7 +85,6 @@ public class TcpConnectionEventListenerTests {
 		QueueChannel outputChannel = new QueueChannel();
 		eventProducer.setOutputChannel(outputChannel);
 		eventProducer.setEventTypes(FooEvent.class, BarEvent.class);
-		BeanFactory mock = mock(BeanFactory.class);
 		given(mock.getBean(AbstractApplicationContext.APPLICATION_EVENT_MULTICASTER_BEAN_NAME,
 				ApplicationEventMulticaster.class))
 				.willReturn(mock(ApplicationEventMulticaster.class));
