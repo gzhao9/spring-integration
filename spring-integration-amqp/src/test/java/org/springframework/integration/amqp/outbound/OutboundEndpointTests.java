@@ -60,10 +60,10 @@ import static org.mockito.Mockito.verify;
  * @since 3.0
  */
 public class OutboundEndpointTests {
+	final ConnectionFactory connectionFactory = mock(ConnectionFactory.class);
 
 	@Test
 	public void testDelayExpression() {
-		ConnectionFactory connectionFactory = mock(ConnectionFactory.class);
 		RabbitTemplate amqpTemplate = spy(new RabbitTemplate(connectionFactory));
 		AmqpOutboundEndpoint endpoint = new AmqpOutboundEndpoint(amqpTemplate);
 		willDoNothing()
@@ -96,7 +96,6 @@ public class OutboundEndpointTests {
 
 	@Test
 	public void testAsyncDelayExpression() {
-		ConnectionFactory connectionFactory = mock(ConnectionFactory.class);
 		AsyncRabbitTemplate amqpTemplate = spy(new AsyncRabbitTemplate(new RabbitTemplate(connectionFactory),
 				new SimpleMessageListenerContainer(connectionFactory), "replyTo"));
 		amqpTemplate.setTaskScheduler(mock(TaskScheduler.class));
@@ -119,7 +118,6 @@ public class OutboundEndpointTests {
 
 	@Test
 	public void testHeaderMapperWinsAdapter() {
-		ConnectionFactory connectionFactory = mock(ConnectionFactory.class);
 		RabbitTemplate amqpTemplate = spy(new RabbitTemplate(connectionFactory));
 		AmqpOutboundEndpoint endpoint = new AmqpOutboundEndpoint(amqpTemplate);
 		endpoint.setHeadersMappedLast(true);
@@ -138,7 +136,6 @@ public class OutboundEndpointTests {
 
 	@Test
 	public void testHeaderMapperWinsGateway() {
-		ConnectionFactory connectionFactory = mock(ConnectionFactory.class);
 		TestRabbitTemplate amqpTemplate = spy(new TestRabbitTemplate(connectionFactory));
 		amqpTemplate.setUseTemporaryReplyQueues(true);
 		AmqpOutboundEndpoint endpoint = new AmqpOutboundEndpoint(amqpTemplate);
@@ -165,7 +162,6 @@ public class OutboundEndpointTests {
 
 	@Test
 	public void testReplyHeadersWin() {
-		ConnectionFactory connectionFactory = mock(ConnectionFactory.class);
 		TestRabbitTemplate amqpTemplate = spy(new TestRabbitTemplate(connectionFactory));
 		amqpTemplate.setUseTemporaryReplyQueues(true);
 		AmqpOutboundEndpoint endpoint = new AmqpOutboundEndpoint(amqpTemplate);
